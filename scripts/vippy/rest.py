@@ -236,7 +236,8 @@ def update_rest_files(type_name=None):
     else:
         type_names = [type_name]
 
-    update_rest_file_single_page(all_types)
+    xml_types = common.get_all_types(exclude='csv')
+    update_rest_file_single_page(xml_types)
 
     for type_name in type_names:
         _log.debug("updating rest files for type: {0}".format(type_name))

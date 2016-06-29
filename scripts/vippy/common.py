@@ -78,10 +78,14 @@ def write_file(path, text):
             f.write(text)
 
 
-def get_all_files(parent_dir, ext=None):
-    """Return a list of paths relative to the given dir_path."""
+def get_all_files(parent_dir, ext=None, exclude=None):
+    """Return a list of paths relative to the given dir_path. To exclude a
+    subtree, e.g., 'csv', provide a value for 'butnot'"""
     paths = []
     for root_dir, dir_paths, file_names in os.walk(parent_dir):
+        if exclude in dir_paths:
+            dir_paths.remove(exclude)
+
         for file_name in file_names:
             path = os.path.join(root_dir, file_name)
             rel_path = os.path.relpath(path, start=parent_dir)
@@ -160,14 +164,15 @@ class AllTypes:
         self.type_map = type_map
 
 
-def get_all_types():
+def get_all_types(exclude=None):
     """
     Read all YAML files, and return an AllTypes object.
     """
     parent_dir = YAML_DIR
     types_map = {}
     all_types = AllTypes(types_map)
-    rel_paths = get_all_files(parent_dir, ext='.yaml')
+    rel_paths = get_all_files(parent_dir, ext='.yaml', exclude=exclude)
+
     for rel_path in rel_paths:
         data_type = read_type(parent_dir, rel_path)
         type_name = data_type.name
