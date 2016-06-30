@@ -374,7 +374,7 @@ class DataType(object):
     @property
     def rest_path(self):
         """Return a path relative to the repo root."""
-        return self.get_rest_path(XML_DIR)
+        return self.get_rest_path(AUTO_GENERATED_DIR)
 
     def get_rest_path(self, dir_path):
         rel_path = self.rel_path
